@@ -1,0 +1,13 @@
+<h1>audit</h1>
+
+<a href="{% url 'audit:new' %}">새 상품 등록</a>
+
+
+{% for post in posts.all %}
+<h3>
+  <a href="{% url 'audit:detail' post.id %}">{{post.name}}</a>
+</h3>
+
+{{post.created_at}}
+
+{% endfor %}
