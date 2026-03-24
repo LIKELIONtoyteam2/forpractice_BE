@@ -1,5 +1,5 @@
 from django.shortcuts import render, get_object_or_404, redirect
-from .models import Post
+from .models import Post, Inventory
 
 from .forms import PostForm
 
@@ -41,3 +41,9 @@ def update_post(request, post_id):
   update_audit.open = request.POST['open']
   update_audit.save()
   return redirect('audit:home')
+
+def inventory_list(request):
+    # DB에 있는 모든 재고(Inventory) 데이터를 가져와서 items라는 상자에 담습니다.
+    items = Inventory.objects.all().order_by('expiration_date') # 유통기한이 임박한 순서대로 정렬!
+    # inventory_list.html 파일에 items 상자를 전달해 줍니다.
+    return render(request, 'inventory_list.html', {'items': items})
