@@ -10,13 +10,9 @@
   <body>
     <h1>Updating Post</h1>
 
-    <form action="{% url 'audit:update_post' update_audit.id %}" method="post">
+    <form action="{% url 'audit:update_post' post.id %}" method="post" enctype="multipart/form-data">
       {% csrf_token %}
-      <p>제목: <input type="text" name="name" value="{{update_audit.name}}" /></p>
-      본문 :
-      <textarea name="expiration" cols="30" rows="10">{{update_audit.expiration}}</textarea>
-      <br />
-      <textarea name="open" cols="30" rows="10">{{update_audit.open}}</textarea>
+      {{ form.as_p}}
       <button type="submit">수정하기</button>
     </form>
   </body>

@@ -99,6 +99,26 @@
         white-space: pre-wrap; /* DB의 줄바꿈을 화면에 그대로 반영 */
         min-height: 150px;
       }
+      
+
+      /* 해시태그 */
+      .hashtag-list {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+        margin-top: 2rem;
+      }
+ 
+      .hashtag-item {
+        display: inline-block;
+        padding: 0.3rem 0.75rem;
+        background-color: #ede9fe;
+        color: #6366f1;
+        border-radius: 999px;
+        font-size: 0.82rem;
+        font-weight: 600;
+      }
+
 
       /* 하단 버튼 (수정/삭제) */
       .post-footer {
@@ -121,6 +141,36 @@
       .btn-delete { background: #fee2e2; color: #ef4444; }
       
       .btn:hover { opacity: 0.8; }
+
+      /* 디데이 컨테이너 레이아웃 */
+      .d-day-container {
+          display: flex;
+          align-items: center;
+          margin: 15px 0;
+          padding: 10px;
+          background-color: #f8f9fa;
+          border-radius: 8px;
+      }
+
+      .d-day-label {
+          font-size: 0.9rem;
+          color: #666;
+          margin-right: 10px;
+      }
+
+      /* 기본 배지 스타일 */
+      .d-day-badge {
+          padding: 5px 15px;
+          border-radius: 50px;
+          font-weight: bold;
+          font-size: 0.85rem;
+          color: white;
+      }
+
+      /* 상태별 색상 (원하시는 색으로 변경 가능) */
+      .status-future { background-color: #007bff; } /* 진행 중: 파랑 */
+      .status-today  { background-color: #ff4757; } /* 오늘: 빨강 */
+      .status-past   { background-color: #6c757d; } /* 종료: 회색 */
     </style>
   </head>
   <body>
@@ -141,10 +191,52 @@
         <h1 class="post-title">{{ post.name }}</h1>
 
         <div class="post-content">
+          유통기한:
           {{ post.expiration }}
           <br />
+          개봉 일자:
           {{ post.open }}
         </div>
+        
+        <h1 class="post-title">{{ post.title }}</h1>
+
+        <div class="d-day-container">
+          <span class="d-day-label">유통기한까지: {{ post.target_date|date:"Y-m-d" }}</span>
+          
+          {% with dday=post.get_d_day %}
+            {% if dday > 0 %}
+              <span class="d-day-badge status-future">D-{{ dday }}</span>
+            {% elif dday == 0 %}
+              <span class="d-day-badge status-today">D-Day</span>
+            {% else %}
+              {# 음수를 양수로 변환하여 D+ 표시 #}
+              <span class="d-day-badge status-past">D+{{ dday|stringformat:"i"|slice:"1:" }}</span>
+            {% endif %}
+          {% endwith %}
+        </div>
+        
+        <div class="d-day-container">
+          <span class="d-day-label">개봉일로부터: {{ post.target_date|date:"Y-m-d" }}</span>
+          
+          {% with dday=post.from_open %}
+            {% if dday > 0 %}
+              <span class="d-day-badge status-future">D+{{ dday }}</span>
+            {% elif dday == 0 %}
+              <span class="d-day-badge status-today">D-Day</span>
+            {% else %}
+              {# 음수를 양수로 변환하여 D+ 표시 #}
+              <span class="d-day-badge status-past">D-{{ dday|stringformat:"i"|slice:"1:" }}</span>
+            {% endif %}
+          {% endwith %}
+        </div>
+        
+        {% if post.hashtag.all %}
+        <div class="hashtag-list">
+          {% for hashtag in post.hashtag.all %}
+          <span class="hashtag-item">#{{ hashtag.hashtag }}</span>
+          {% endfor %}
+        </div>
+        {% endif %}
 
         <footer class="post-footer">
           <a href="{% url 'audit:update_page' post.id %}" class="btn btn-edit">수정</a>

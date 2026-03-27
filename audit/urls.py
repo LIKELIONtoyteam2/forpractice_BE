@@ -11,5 +11,4 @@ urlpatterns=[
   path('delete/<int:post_id>', delete, name="delete"),
   path('update_page/<int:post_id>', update_page, name="update_page"),
   path('update_post/<int:post_id>', update_post, name="update_post"),
-  path('inventory/', views.inventory_list, name='inventory_list'),
 ]
