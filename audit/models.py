@@ -15,6 +15,7 @@ class Post(models.Model):
   expiration = models.DateField() #유통기한
   open = models.DateField()
   created_at = models.DateTimeField(auto_now_add=True)
+  photo = models.ImageField(blank=True, null=True, upload_to="post_photo")
   hashtag = models.ManyToManyField(Hashtag)
 
   def get_d_day(self):

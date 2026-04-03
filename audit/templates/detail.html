@@ -189,7 +189,10 @@
         </header>
 
         <h1 class="post-title">{{ post.name }}</h1>
-
+        {% if post.photo %}
+        <img src="{{ post.photo.url }}" alt="" height="400px;">
+        {% endif %}
+        <br>
         <div class="post-content">
           유통기한:
           {{ post.expiration }}
