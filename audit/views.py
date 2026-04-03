@@ -55,3 +55,4 @@ def update_post(request, post_id):
     update_audit.save()
     return redirect('audit:detail', update_audit.id)
   return redirect('audit:home')
+
