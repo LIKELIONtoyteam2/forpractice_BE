@@ -39,7 +39,7 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "account.apps.AccountConfig",
-    'audit.apps.AuditConfig',
+    "audit.apps.AuditConfig",
 ]
 
 MIDDLEWARE = [
@@ -105,17 +105,17 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/5.2/topics/i18n/
 
-AUTH_USER_MODEL = 'account.CustomUser' #사용자 테이블 설정
+AUTH_USER_MODEL = "account.CustomUser"  # 사용자 테이블 설정
 
-LANGUAGE_CODE = "ko-kr" #언어 설정
+LANGUAGE_CODE = "ko-kr"  # 언어 설정
 
-TIME_ZONE = "Asia/Seoul" #시간대 설정
+TIME_ZONE = "Asia/Seoul"  # 시간대 설정
 
-USE_I18N = True #한국어 번역 적용
+USE_I18N = True  # 한국어 번역 적용
 
 USE_TZ = True
 
-USE_L10N = True # 한국 날짜,숫자 형식
+USE_L10N = True  # 한국 날짜,숫자 형식
 
 
 # Static files (CSS, JavaScript, Images)
@@ -123,16 +123,16 @@ USE_L10N = True # 한국 날짜,숫자 형식
 
 STATIC_URL = "/static/"
 
-STATIC_DIRS=[
-  BASE_DIR / 'static',
-  os.path.join(BASE_DIR, 'audit', 'static'),
+STATIC_DIRS = [
+    BASE_DIR / "static",
+    os.path.join(BASE_DIR, "audit", "static"),
 ]
 
-STATIC_ROOT = os.path.join('staticfiles')
+STATIC_ROOT = os.path.join("staticfiles")
 
-#media
-MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+# media
+MEDIA_URL = "/media/"
+MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 
 
 # Default primary key field type
