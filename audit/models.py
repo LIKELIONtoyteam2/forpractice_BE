@@ -7,7 +7,7 @@ GENDER_CHOICES = (
 )
 
 class Hashtag(models.Model):
-    name = models.CharField(max_length=50, unique=True)
+    name = models.CharField(max_length=50, unique=True) #중복 해시태그 방지
 
     def __str__(self):
         return self.name
@@ -18,9 +18,9 @@ class Post(models.Model):
   gender = models.IntegerField(choices=GENDER_CHOICES, default=1)
   expiration_date = models.DateField()
   open_date = models.DateField()
-  hashtag = models.ManyToManyField(Hashtag, related_name='posts', blank=True)
+  hashtag = models.ManyToManyField(Hashtag, blank=True)
+  photo = models.ImageField(blank=True, null=True, upload_to="post_photo")
 
   def __str__(self):
     return self.title
 
-  

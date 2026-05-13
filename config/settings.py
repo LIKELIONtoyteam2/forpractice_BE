@@ -11,10 +11,16 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 """
 
 from pathlib import Path
+import os
+from datetime import timedelta
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+#media
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
@@ -38,8 +44,28 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "rest_framework",
+    "rest_framework_simplejwt",
     "audit",
+    "accounts",
 ]
+
+REST_FRAMEWORK = {
+  'DEFAULT_AUTHENTICATION_CLASSES': (
+    'rest_framework_simplejwt.authentication.JWTAuthentication',
+    'rest_framework.authentication.SessionAuthentication',
+  ),
+}
+REST_USE_JWT = True
+
+SIMPLE_JWT = {
+  'ACCESS_TOKEN_LIFETIME': timedelta(hours=10),
+  'REFRESH_TOKEN_LIFETIME': timedelta(days=7),
+  'ROTATE_REFRESH_TOKENS': True,
+  'AUTH_HEADER_TYPES':('Bearer',),
+  'TOKEN_USER_CLASS': 'api.User',
+}
+
+AUTH_USER_MODEL = 'accounts.User'
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
@@ -122,3 +148,12 @@ STATIC_URL = "static/"
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+
+STATIC_URL = '/static/'
+
+STATICFILES_DIRS =[
+  BASE_DIR / 'static',
+]
+
+STATIC_ROOT = os.path.join('staticfiles')

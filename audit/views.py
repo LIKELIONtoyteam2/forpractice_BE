@@ -5,16 +5,19 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from .models import Post
 from .serializers import PostSerializer
+from rest_framework.permissions import IsAuthenticated
 
 
 # Create your views here.
 class PostListView(APIView):
+  permission_classes = [IsAuthenticated]
+
   def get(self, request:HttpRequest, format=None):
     posts = Post.objects.all()
     serializer = PostSerializer(posts, many=True)
     return Response(serializer.data, status=status.HTTP_200_OK)
   
-  def post(self,request:HttpRequest, format=None):
+  def post(self, request:HttpRequest, format=None):
     serializer = PostSerializer(data=request.data)
     if serializer.is_valid():
       serializer.save()
