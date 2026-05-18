@@ -103,7 +103,7 @@ CORS_ALLOW_HEADERS = ( # 요청을 할 때 사용될 수 있는 non-standard HTT
     'x-requested-with',
 )
 
-DEBUG = False
+#DEBUG = False
 
 ALLOWED_HOST = ['bailey44.pythonanywhere.com']
 
@@ -187,4 +187,4 @@ STATICFILES_DIRS =[
   BASE_DIR / 'static',
 ]
 
-STATIC_ROOT = os.path.join('staticfiles')
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')

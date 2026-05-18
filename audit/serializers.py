@@ -39,7 +39,7 @@ class PostSerializer(serializers.ModelSerializer):
   
   def update(self, instance, validated_data):
         # 1. tag_names 데이터 추출
-        hashtag_names = validated_data.pop('tag_names', None)
+        hashtag_names = validated_data.pop('hashtag_names', None)
         
         # 2. 기본 필드(title, body 등) 업데이트
         # instance는 수정할 대상 객체입니다.
