@@ -103,9 +103,9 @@ CORS_ALLOW_HEADERS = ( # 요청을 할 때 사용될 수 있는 non-standard HTT
     'x-requested-with',
 )
 
-DEBUG = False
+#DEBUG = False
 
-ALLOWED_HOST = ['bailey44.pythonanywhere.com']
+#ALLOWED_HOST = ['bailey44.pythonanywhere.com']
 
 ROOT_URLCONF = "config.urls"
 
