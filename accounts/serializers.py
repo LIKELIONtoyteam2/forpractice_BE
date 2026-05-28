@@ -6,13 +6,13 @@ class UserSerializer(serializers.ModelSerializer):
   class Meta:
     model = User
     fields =(
-      'id', 'id_name', 'username', 'email', 'password'
+      'id', 'nickname', 'username', 'email', 'password'
     )
   def create(self, validated_data):
     user = User.objects.create(
       username=validated_data['username'],
       email=validated_data['email'],
-      id_name=validated_data['id_name']
+      nickname=validated_data['nickname']
     )
     user.set_password(validated_data['password'])
     user.save()
@@ -20,15 +20,15 @@ class UserSerializer(serializers.ModelSerializer):
     return user
   
 class UserLoginSerializer(serializers.Serializer):
-  id_name = serializers.CharField(max_length=100)
+  username = serializers.CharField(max_length=100)
   password = serializers.CharField(max_length=128, write_only=True)
 
   def validate(self, data): #입력받은 데이터 유효성 검사
-    id_name = data.get('id_name')
+    username = data.get('username')
     password = data.get('password')
 
-    if User.objects.filter(id_name=id_name).exists():
-      user = User.objects.get(id_name=id_name)
+    if User.objects.filter(username=username).exists():
+      user = User.objects.get(username=username)
 
       if not user.check_password(password): #비밀번호 유효성 검사
         raise serializers.ValidationError()
@@ -39,7 +39,7 @@ class UserLoginSerializer(serializers.Serializer):
 
         return{
           'id': user.id,
-          'id_name': user.id_name,
+          'username': user.username,
           'email': user.email,
           'access': access,
           'refresh': refresh
@@ -48,7 +48,7 @@ class UserLoginSerializer(serializers.Serializer):
 class UserProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ['username', 'id_name', 'profile_image', 'header_image']
+        fields = ['username', 'nickname', 'profile_image', 'header_image']
         extra_kwargs = {
             'username': {'validators': []},  # unique 검증 제거
         }
