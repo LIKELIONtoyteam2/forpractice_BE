@@ -12,23 +12,27 @@ class PostListView(APIView):
   permission_classes = [IsAuthenticated]
   
   def get(self, request:HttpRequest, format=None):
-    posts = Post.objects.all()
+    posts = Post.objects.filter(author=request.user).order_by('-date')
     serializer = PostSerializer(posts, many=True)
-    return Response(serializer.data, status=status.HTTP_200_OK)
+    return Response({
+      'user': request.user.username,
+      'post_count': posts.count(),
+      'posts': serializer.data
+    }, status=status.HTTP_200_OK)
   
   def post(self, request:HttpRequest, format=None):
     serializer = PostSerializer(data=request.data)
     if serializer.is_valid():
-      serializer.save()
+      serializer.save(author=request.user)
       return Response(serializer.data, status=status.HTTP_201_CREATED)
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class PostDetailView(APIView):
   permission_classes = [IsAuthenticated]
   
-  def get_object(self, pk):
+  def get_object(self, pk, user):
     try:
-      return Post.objects.get(pk=pk)
+      return Post.objects.get(pk=pk, author=user)
     except Post.DoesNotExist:
       raise Http404
     

@@ -15,12 +15,12 @@ class PostSerializer(serializers.ModelSerializer):
         write_only=True, #요청에서만 보이고, 응답엔 안보임.
         required=False
     )
-  
+  author = serializers.StringRelatedField(read_only=True)
   
   class Meta:
     model = Post
     fields = (
-      'id', 'title', 'date', 'body', 'gender', 'expiration_date', 'open_date', 'hashtags', 'hashtag_names', 'photo'
+      'id', 'author', 'title', 'date', 'body', 'gender', 'expiration_date', 'open_date', 'hashtags', 'hashtag_names', 'photo'
     )
   def create(self, validated_data):
         # 1. tag_names 데이터 추출 후 validated_data에서 제거
