@@ -1,7 +1,11 @@
 from django.contrib import admin
-from .models import Post, Hashtag
 
 # Register your models here.
+from .models import Post, Hashtag
 
-admin.site.register(Post)
+@admin.register(Post)
+class PostAdmin(admin.ModelAdmin):
+    list_display = ['title']
+    filter_horizontal = ['hashtag'] 
+
 admin.site.register(Hashtag)

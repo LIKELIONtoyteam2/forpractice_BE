@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{{ post.title }} - 상세 보기</title>
+    <style>
+      /* --- 스타일링 (전체 합본) --- */
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+        list-style: none;
+        text-decoration: none;
+      }
+
+      body {
+        font-family: 'Pretendard', sans-serif;
+        background-color: #f9fafb;
+        color: #111827;
+      }
+
+      /* 헤더 영역 */
+      .page-header {
+        width: 100%;
+        height: 4rem;
+        display: flex;
+        align-items: center;
+        position: fixed;
+        top: 0;
+        z-index: 10;
+        padding: 0 2rem;
+        background-color: #ffffff;
+        border-bottom: 1px solid #e5e7eb;
+      }
+
+      .page-header a {
+        font-weight: 600;
+        color: #374151;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+
+      /* 메인 컨테이너 */
+      main {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 6rem 1rem;
+      }
+
+      /* 게시물 카드 */
+      article {
+        width: 100%;
+        max-width: 750px;
+        background: #fff;
+        padding: 2.5rem;
+        border-radius: 12px;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+      }
+
+      /* 작성자 및 날짜 정보 */
+      .article-header {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        margin-bottom: 2rem;
+      }
+
+      .profile-circle {
+        width: 45px;
+        height: 45px;
+        background-color: #e5e7eb;
+        border-radius: 50%;
+      }
+
+      .post-meta h3 {
+        font-size: 1rem;
+        margin-bottom: 2px;
+      }
+
+      .post-meta p {
+        font-size: 0.85rem;
+        color: #9ca3af; /* 날짜 색상 */
+      }
+
+      /* 제목 및 본문 */
+      .post-title {
+        font-size: 2.25rem;
+        font-weight: 800;
+        margin-bottom: 1.5rem;
+      }
+
+      .post-content {
+        font-size: 1.1rem;
+        line-height: 1.7;
+        color: #4b5563;
+        white-space: pre-wrap; /* DB의 줄바꿈을 화면에 그대로 반영 */
+        min-height: 150px;
+      }
+      
+
+      /* 해시태그 */
+      .hashtag-list {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+        margin-top: 2rem;
+      }
+ 
+      .hashtag-item {
+        display: inline-block;
+        padding: 0.3rem 0.75rem;
+        background-color: #ede9fe;
+        color: #6366f1;
+        border-radius: 999px;
+        font-size: 0.82rem;
+        font-weight: 600;
+      }
+
+
+      /* 하단 버튼 (수정/삭제) */
+      .post-footer {
+        margin-top: 3rem;
+        padding-top: 1.5rem;
+        border-top: 1px solid #f3f4f6;
+        display: flex;
+        justify-content: flex-end;
+        gap: 0.75rem;
+      }
+
+      .btn {
+        padding: 0.5rem 1rem;
+        border-radius: 6px;
+        font-size: 0.9rem;
+        font-weight: 600;
+      }
+
+      .btn-edit { background: #f3f4f6; color: #4b5563; }
+      .btn-delete { background: #fee2e2; color: #ef4444; }
+      
+      .btn:hover { opacity: 0.8; }
+
+      /* 디데이 컨테이너 레이아웃 */
+      .d-day-container {
+          display: flex;
+          align-items: center;
+          margin: 15px 0;
+          padding: 10px;
+          background-color: #f8f9fa;
+          border-radius: 8px;
+      }
+
+      .d-day-label {
+          font-size: 0.9rem;
+          color: #666;
+          margin-right: 10px;
+      }
+
+      /* 기본 배지 스타일 */
+      .d-day-badge {
+          padding: 5px 15px;
+          border-radius: 50px;
+          font-weight: bold;
+          font-size: 0.85rem;
+          color: white;
+      }
+
+      /* 상태별 색상 (원하시는 색으로 변경 가능) */
+      .status-future { background-color: #007bff; } /* 진행 중: 파랑 */
+      .status-today  { background-color: #ff4757; } /* 오늘: 빨강 */
+      .status-past   { background-color: #6c757d; } /* 종료: 회색 */
+    </style>
+  </head>
+  <body>
+    <header class="page-header">
+      <a href="{% url 'audit:home' %}"><span>←</span> 목록으로 돌아가기</a>
+    </header>
+
+    <main>
+      <article>
+        <header class="article-header">
+          <div class="profile-circle"></div>
+          <div class="post-meta">
+            <h3>익명 사용자</h3>
+            <p>{{ post.created_at|date:"Y.m.d H:i" }}</p>
+          </div>
+        </header>
+
+        <h1 class="post-title">{{ post.name }}</h1>
+        {% if post.photo %}
+        <img src="{{ post.photo.url }}" alt="" height="400px;">
+        {% endif %}
+        <br>
+        <div class="post-content">
+          유통기한:
+          {{ post.expiration }}
+          <br />
+          개봉 일자:
+          {{ post.open }}
+        </div>
+        
+        <h1 class="post-title">{{ post.title }}</h1>
+
+        <div class="d-day-container">
+          <span class="d-day-label">유통기한까지: {{ post.target_date|date:"Y-m-d" }}</span>
+          
+          {% with dday=post.get_d_day %}
+            {% if dday > 0 %}
+              <span class="d-day-badge status-future">D-{{ dday }}</span>
+            {% elif dday == 0 %}
+              <span class="d-day-badge status-today">D-Day</span>
+            {% else %}
+              {# 음수를 양수로 변환하여 D+ 표시 #}
+              <span class="d-day-badge status-past">D+{{ dday|stringformat:"i"|slice:"1:" }}</span>
+            {% endif %}
+          {% endwith %}
+        </div>
+        
+        <div class="d-day-container">
+          <span class="d-day-label">개봉일로부터: {{ post.target_date|date:"Y-m-d" }}</span>
+          
+          {% with dday=post.from_open %}
+            {% if dday > 0 %}
+              <span class="d-day-badge status-future">D+{{ dday }}</span>
+            {% elif dday == 0 %}
+              <span class="d-day-badge status-today">D-Day</span>
+            {% else %}
+              {# 음수를 양수로 변환하여 D+ 표시 #}
+              <span class="d-day-badge status-past">D-{{ dday|stringformat:"i"|slice:"1:" }}</span>
+            {% endif %}
+          {% endwith %}
+        </div>
+        
+        {% if post.hashtag.all %}
+        <div class="hashtag-list">
+          {% for hashtag in post.hashtag.all %}
+          <span class="hashtag-item">#{{ hashtag.hashtag }}</span>
+          {% endfor %}
+        </div>
+        {% endif %}
+
+        <footer class="post-footer">
+          <a href="{% url 'audit:update_page' post.id %}" class="btn btn-edit">수정</a>
+          <a href="{% url 'audit:delete' post.id %}" class="btn btn-delete">삭제</a>
+        </footer>
+      </article>
+    </main>
+  </body>
+</html>
