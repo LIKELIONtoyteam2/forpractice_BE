@@ -30,9 +30,9 @@ class PostListView(APIView):
 class PostDetailView(APIView):
   permission_classes = [IsAuthenticated]
   
-  def get_object(self, pk, user):
+  def get_object(self, pk):
     try:
-      return Post.objects.get(pk=pk, author=user)
+      return Post.objects.get(pk=pk)
     except Post.DoesNotExist:
       raise Http404
     
