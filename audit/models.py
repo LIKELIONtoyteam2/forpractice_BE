@@ -1,4 +1,5 @@
 from django.db import models
+from django.conf import settings
 
 # Create your models here.
 GENDER_CHOICES = (
@@ -12,6 +13,12 @@ class Hashtag(models.Model):
     def __str__(self):
         return self.name
 class Post(models.Model):
+  author = models.ForeignKey(             # ✅ 추가
+    settings.AUTH_USER_MODEL,
+    on_delete=models.CASCADE,
+    related_name='posts',
+    null=True                             # 기존 데이터 때문에 null 허용
+  )
   title = models.CharField(max_length=200)
   date = models.DateTimeField(auto_now_add=True)
   body = models.TextField()

@@ -6,13 +6,17 @@ class UserSerializer(serializers.ModelSerializer):
   class Meta:
     model = User
     fields =(
-      'id', 'nickname', 'username', 'email', 'password'
+      'id', 'nickname', 'username', 'email', 'password', 'profile_image'
     )
+    extra_kwargs = {
+      'profile_image': {'required': False},  # 선택 항목
+    }
   def create(self, validated_data):
     user = User.objects.create(
       username=validated_data['username'],
       email=validated_data['email'],
-      nickname=validated_data['nickname']
+      nickname=validated_data['nickname'],
+      profile_image=validated_data.get('profile_image', None) 
     )
     user.set_password(validated_data['password'])
     user.save()
